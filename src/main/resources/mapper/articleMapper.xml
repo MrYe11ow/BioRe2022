@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.ArticleMapper">
+
+    <insert id="batchInsert" parameterType="com.example.demo.pojo.Article">
+        insert into Article
+        (pmid,article_title,abstract_text)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+                #{item.pmid},#{item.articleTitle},#{item.abstractText}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="insert" parameterType="com.example.demo.pojo.Article">
+        insert into Article
+        (pmid,article_title,abstract_text)
+        values
+        (#{item.pmid},#{item.articleTitle},#{item.abstractText})
+    </insert>
+
+    <select id="queryById" parameterType="String" resultType="com.example.demo.pojo.Article">
+        select pmid,article_title,abstract_text from Article where pmid = #{pmid} limit 1;
+    </select>
+
+</mapper>
