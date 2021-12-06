@@ -8,7 +8,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.client.RestTemplate;
 
-@MapperScan("com.example/demo/mapper")
+@MapperScan("com.example.demo.mapper")
 @SpringBootApplication
 public class DemoApplication {
 

@@ -2,6 +2,7 @@ package com.example.demo.util;
 
 import com.example.demo.pojo.Article;
 import com.example.demo.pojo.EfetchParam;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,6 +11,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class JsoupUtil {
 
     public static EfetchParam parseForEfetchParam(String html){
@@ -33,11 +35,15 @@ public class JsoupUtil {
                 pmid = article.select("PMID").first().text();
                 articleTitle = article.select("ArticleTitle").first().text();
                 abstractText = article.select("AbstractText").first().text();
-
             } catch (Exception e) {
             }
-            if(pmid!=null)
-            list.add(Article.builder().articleTitle(articleTitle).pmid(pmid).abstractText(abstractText).build());
+            if(pmid!=null){
+                if(articleTitle != null && articleTitle.length()>200){
+                    articleTitle = articleTitle.substring(0,200);
+                    log.error("pmid:{} title过长，已截取",pmid);
+                }
+                list.add(Article.builder().articleTitle(articleTitle).pmid(pmid).abstractText(abstractText).build());
+            }
         }
         return list;
     }
