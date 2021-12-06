@@ -24,4 +24,12 @@
         select pmid,article_title,abstract_text from Article where pmid = #{pmid} limit 1;
     </select>
 
+    <select id="queryPage" resultType="com.example.demo.pojo.Article">
+        select pmid,article_title,abstract_text from Article limit #{start}, #{pagesize};
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(1) from Article
+    </select>
+
 </mapper>

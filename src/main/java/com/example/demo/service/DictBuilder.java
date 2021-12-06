@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class DictBuilder {
 
@@ -51,7 +53,7 @@ public class DictBuilder {
         String sql = "select count(1) from HGNC";
         Integer totalNum = jdbcTemplate.queryForObject(sql, Integer.class);
         int mapInitSize = (int) ((float) totalNum / 0.75F + 1.0F);
-        System.out.println("map的初始化大小为：" + mapInitSize);
+        log.info("map的初始化大小为：" + mapInitSize);
         Map<String,Integer> dict = null;
         if(mapInitSize > 0){
             dict = new HashMap<String,Integer>(mapInitSize);
@@ -59,7 +61,7 @@ public class DictBuilder {
         if(dict == null){
             throw new Exception("词典创建失败");
         }
-        System.out.println("词典初始化完毕！");
+        log.info("词典初始化完毕！");
 
         String querySql = "select Approved_symbol from HGNC";
         List<String> list = jdbcTemplate.queryForList(querySql, null, String.class);
