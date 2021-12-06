@@ -73,6 +73,15 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>abner</groupId>
+			<artifactId>abner</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/abner.jar</systemPath>
+		</dependency>
+
 	</dependencies>
 
 	<build>
