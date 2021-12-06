@@ -17,15 +17,15 @@
         insert into Article
         (pmid,article_title,abstract_text)
         values
-        (#{item.pmid},#{item.articleTitle},#{item.abstractText})
+        (#{pmid},#{articleTitle},#{abstractText})
     </insert>
 
     <select id="queryById" parameterType="String" resultType="com.example.demo.pojo.Article">
-        select pmid,article_title,abstract_text from Article where pmid = #{pmid} limit 1;
+        select pmid,article_title,abstract_text from Article where pmid = #{pmid} limit 1
     </select>
 
     <select id="queryPage" resultType="com.example.demo.pojo.Article">
-        select pmid,article_title,abstract_text from Article limit #{start}, #{pagesize};
+        select pmid,article_title,abstract_text from Article limit #{start}, #{pagesize}
     </select>
 
     <select id="queryTotal" resultType="int">

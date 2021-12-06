@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.SentenceMapper">
+
+    <insert id="batchInsert" parameterType="com.example.demo.pojo.Sentence">
+        insert into Sentence
+        (pmid,serial_number,text)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.pmid},#{item.serialNumber},#{item.text}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="insert" parameterType="com.example.demo.pojo.Sentence">
+        insert into Sentence
+        (pmid,serial_number,text)
+        values
+        (#{pmid},#{serialNumber},#{text})
+    </insert>
+
+    <select id="queryById" parameterType="long" resultType="com.example.demo.pojo.Sentence">
+        select pmid,serial_number as serialNumber,text from Sentence where id = #{id} limit 1
+    </select>
+
+    <select id="queryByPmid" parameterType="String" resultType="com.example.demo.pojo.Sentence">
+        select id, pmid,serial_number as serialNumber,text from Sentence where pmid = #{pmid}
+    </select>
+
+    <select id="queryPage" resultType="com.example.demo.pojo.Sentence">
+        select id, pmid,serial_number as serialNumber,text from Sentence limit #{start}, #{pagesize};
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(1) from Sentence
+    </select>
+
+</mapper>

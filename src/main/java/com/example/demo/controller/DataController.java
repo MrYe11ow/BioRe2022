@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.service.DictBuilder;
 import com.example.demo.service.Eutilities;
 import com.example.demo.service.Matcher;
+import com.example.demo.service.SsplitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,8 @@ public class DataController {
     @Autowired
     private DictBuilder dictBuilder;
     @Autowired
+    private SsplitService ssplitService;
+    @Autowired
     private Matcher matcher;
 
     @RequestMapping("/download")
@@ -29,10 +32,15 @@ public class DataController {
         eutilities.download(query);
     }
 
+    @RequestMapping("/ssplit")
+    public void ssplit(){
+        ssplitService.splitAll();
+    }
+
     @RequestMapping("/ner")
     public void ner() throws Exception{
         Map<String, Integer> dict = dictBuilder.bulidFromMysql();
-        matcher.match(dict);
+        matcher.matchSentence(dict);
     }
 
 }
