@@ -10,7 +10,22 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
+  data:
+    neo4j:
+      uri: bolt://localhost:7687
+      username: neo4j
+      password: h123456
 
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
   type-aliases-package: com.example
+
+logging:
+  level:
+    org:
+      neo4j:
+        ogm:
+          drivers:
+            bolt:
+              request:
+                BoltRequest: DEBUG
