@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.EntityMapper">
+
+    <insert id="batchInsert" parameterType="com.example.demo.pojo.Sentence">
+        insert into Entity
+        (pmid, sentence_id, name, type, taggedby)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.pmid},#{item.sentenceId},#{item.name},#{item.type},#{item.taggedby}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="insert" parameterType="com.example.demo.pojo.Sentence">
+        insert into Entity
+            (pmid, sentence_id, name, type, taggedby)
+        values
+            (#{pmid},#{sentenceId},#{name},#{type},#{taggedby})
+    </insert>
+
+    <select id="queryBySentenceId" parameterType="long" resultType="com.example.demo.pojo.Entity">
+        select id, pmid, sentence_id as sentenceId, name, type, taggedby from Entity where sentence_id = #{sentenceId}
+    </select>
+
+    <select id="queryByPmid" parameterType="String" resultType="com.example.demo.pojo.Entity">
+        select id, pmid, sentence_id as sentenceId, name, type, taggedby from Entity where pmid = #{pmid}
+    </select>
+
+    <select id="queryAll" resultType="com.example.demo.pojo.Entity">
+        select id, pmid, sentence_id as sentenceId, name, type, taggedby from Entity
+    </select>
+
+</mapper>

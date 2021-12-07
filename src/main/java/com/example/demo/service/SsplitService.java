@@ -38,9 +38,9 @@ public class SsplitService {
         }
         SentenceDetectorME detector = new SentenceDetectorME(model);
 
-        Integer total = articleMapper.queryTotal();
+        Integer total = articleMapper.queryLeftTotal("ssplit_flag");
         for(int i = 0; i<total; i+=500){
-            List<Article> articles = articleMapper.queryPage(i, 500);
+            List<Article> articles = articleMapper.queryLeftPage("ssplit_flag", i, 500);
             for(Article article : articles){
                 List<Sentence> sentenceList = new ArrayList<>();
                 String pmid = article.getPmid();

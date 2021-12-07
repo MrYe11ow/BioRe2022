@@ -29,3 +29,6 @@ public class DemoApplication {
 		return redisTemplate;
 	}
 }
+/*
+* entity表  id  pmid  sentence_id  serial_number  entity_name  entity_type  taggedby
+* */

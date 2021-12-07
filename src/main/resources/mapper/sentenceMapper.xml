@@ -28,12 +28,12 @@
         select id, pmid,serial_number as serialNumber,text from Sentence where pmid = #{pmid}
     </select>
 
-    <select id="queryPage" resultType="com.example.demo.pojo.Sentence">
-        select id, pmid,serial_number as serialNumber,text from Sentence limit #{start}, #{pagesize};
+    <select id="queryLeftPage" resultType="com.example.demo.pojo.Sentence">
+        select id, pmid,serial_number as serialNumber,text from Sentence where ${col} = 0 limit #{start}, #{pagesize};
     </select>
 
-    <select id="queryTotal" resultType="int">
-        select count(1) from Sentence
+    <select id="queryLeftTotal" resultType="int">
+        select count(1) from Sentence where ${col} = 0
     </select>
 
 </mapper>

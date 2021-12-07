@@ -5,6 +5,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+/**
+ * 标记位 dict_flag abner_flag
+ */
 public interface SentenceMapper {
 
     void insert(Sentence sentence);
@@ -15,7 +18,19 @@ public interface SentenceMapper {
 
     List<Sentence> queryByPmid(String pmid);
 
-    List<Sentence> queryPage(@Param("start")int start, @Param("pagesize")int pagesize);
+    /**
+     * 该步骤中 剩余 分页
+     * @param col 列名 任务完成标记位
+     * @param start
+     * @param pagesize
+     * @return
+     */
+    List<Sentence> queryLeftPage(@Param("col")String col, @Param("start")int start, @Param("pagesize")int pagesize);
 
-    int queryTotal();
+    /**
+     * 该步骤中 剩余待处理数量
+     * @param col
+     * @return
+     */
+    int queryLeftTotal(String col);
 }
