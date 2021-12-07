@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.mapper.EntityMapper;
 import com.example.demo.pojo.Entity;
+import com.example.echarts.EchartsNode;
+import com.example.echarts.EchartsResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -90,5 +92,22 @@ public class Result {
 
     public List<String> getContainedPmids(String name){
         return redisTemplate.opsForList().range("AR:" + name, 0, -1);
+    }
+
+    public EchartsResponse buildEchartsData(){
+        EchartsResponse response = new EchartsResponse();
+        List<String> list = topPair(10);
+        Iterator<String> iterator = list.iterator();
+        while (iterator.hasNext()){
+            String s = iterator.next();
+            String[] ss = s.split(":");
+            String e1 = ss[0];
+            String e2 = ss[1];
+            int e1num = 0;//e1出现的次数
+            int e2num = 0;//e2出现的次数
+            int id = 0;//selectIdByName
+            new EchartsNode(id,e1,e1num,e1num,0);
+        }
+        return response;
     }
 }

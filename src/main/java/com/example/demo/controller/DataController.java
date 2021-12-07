@@ -4,6 +4,7 @@ import com.example.demo.mapper.ArticleMapper;
 import com.example.demo.pojo.Article;
 import com.example.demo.pojo.Entity;
 import com.example.demo.service.Result;
+import com.example.echarts.EchartsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,6 +70,15 @@ public class DataController {
     @RequestMapping("/protein/{pmid}")
     public List<Entity> getProteinByPmid(@PathVariable("pmid") String pmid){
         return null;
+    }
+
+    /**
+     * 获取echarts所需的json数据
+     * @return
+     */
+    @RequestMapping("/echarts")
+    public EchartsResponse getEchartsData(){
+        return result.buildEchartsData();
     }
 
 }
