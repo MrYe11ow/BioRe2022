@@ -1,46 +1,74 @@
 package com.example.demo.controller;
 
-import com.example.demo.service.DictBuilder;
-import com.example.demo.service.Eutilities;
-import com.example.demo.service.Matcher;
-import com.example.demo.service.SsplitService;
+import com.example.demo.mapper.ArticleMapper;
+import com.example.demo.pojo.Article;
+import com.example.demo.pojo.Entity;
+import com.example.demo.service.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/data")
 public class DataController {
 
     @Autowired
-    private Eutilities eutilities;
+    private ArticleMapper articleMapper;
+    @Autowired
+    private Result result;
 
-    @Autowired
-    private DictBuilder dictBuilder;
-    @Autowired
-    private SsplitService ssplitService;
-    @Autowired
-    private Matcher matcher;
-
-    @RequestMapping("/download")
-    public void download(){
-        String query = "breast+cancer+1935[pdat]";
-        eutilities.download(query);
+    /**
+     * 根据pmid查文章
+     * @param pmid
+     * @return
+     */
+    @RequestMapping("/article/{pmid}")
+    public Article getArticleByPmid(@PathVariable("pmid") String pmid){
+        return articleMapper.queryById(pmid);
     }
 
-    @RequestMapping("/ssplit")
-    public void ssplit(){
-        ssplitService.splitAll();
+    /**
+     * 获取包含某实体的所有文章id
+     * @param name
+     * @return
+     */
+    @RequestMapping("/contained/{name}")
+    public List<String> getContainedPmids(@PathVariable("name") String name){
+        return result.getContainedPmids(name);
     }
 
-    @RequestMapping("/ner")
-    public void ner() throws Exception{
-        Map<String, Integer> dict = dictBuilder.bulidFromMysql();
-        matcher.matchSentence(dict);
+    /**
+     * 获取包含某实体的所有文章id
+     * @param name1
+     * @param name2
+     * @return
+     */
+    @RequestMapping("/contained/{name1}/{name2}")
+    public List<String> getContainedPmids(@PathVariable("name1") String name1, @PathVariable("name2") String name2){
+        return null;
+    }
+
+    /**
+     * 获取指定文中的所有gene
+     * @param pmid
+     * @return
+     */
+    @RequestMapping("/gene/{pmid}")
+    public List<Entity> getGeneByPmid(@PathVariable("pmid") String pmid){
+        return null;
+    }
+
+    /**
+     * 获取指定文中的所有protein
+     * @param pmid
+     * @return
+     */
+    @RequestMapping("/protein/{pmid}")
+    public List<Entity> getProteinByPmid(@PathVariable("pmid") String pmid){
+        return null;
     }
 
 }
