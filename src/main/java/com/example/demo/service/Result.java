@@ -32,26 +32,29 @@ public class Result {
 
         List<Entity> entities = entityMapper.queryAll();
         for(Entity entity : entities){
+            int id = entity.getId();
             String pmid = entity.getPmid();
             int serialNumber = entity.getSerialNumber();
             String name = entity.getName();
             String type = entity.getType();
-            //todo 去重
+
+            //存一句中的实体
             String sentenceKey = pmid + ":" + serialNumber;
             redisTemplate.opsForList().leftPush(sentenceKey,name);
+            //存一文中的实体
             String articleKey = pmid;
             redisTemplate.opsForList().leftPush(articleKey,name);
 
-            //统计某一实体在所有文章中出现的频次
+            //todo 去重 统计某一实体在所有文章中出现的频次
 
             //统计某一实体在所有句子中出现的频次
             redisTemplate.opsForZSet().add("GeneSingleRanking",name,1);
 
-            //哪些文章包含该实体 key[AR:XXX] article
-            redisTemplate.opsForSet().add("AR:"+name,pmid);
+            //哪些文章包含该实体 key[A:XXX] article
+            redisTemplate.opsForSet().add("A:"+name,pmid);
 
-            //哪些句子包含该实体 key[SE:XXX] sentence
-            redisTemplate.opsForSet().add("SE:"+name,pmid);
+            //哪些句子包含该实体 key[S:XXX] sentence
+            redisTemplate.opsForSet().add("S:"+name,pmid+":"+serialNumber);
         }
 
         //todo 移上去
@@ -106,7 +109,7 @@ public class Result {
             int e1num = 0;//e1出现的次数
             int e2num = 0;//e2出现的次数
             int id = 0;//selectIdByName
-            new EchartsNode(id,e1,e1num,e1num,0);
+            new EchartsNode(id,e1,e1num,e2num,0);
         }
         return response;
     }

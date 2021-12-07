@@ -1,7 +1,7 @@
 package com.example.demo;
 
 import abner.Tagger;
-import com.example.demo.demo.Text;
+import com.example.demo.testdata.Text;
 
 public class AbnerTest {
 

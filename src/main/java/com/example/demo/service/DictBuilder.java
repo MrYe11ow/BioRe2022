@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -49,8 +50,19 @@ public class DictBuilder {
         return dict;
     }
 
-    public Map<String,Integer> bulidFromMysql()throws Exception{
-        String sql = "select count(1) from HGNC";
+    public Map<String,Integer> bulidFromMysql(String type)throws Exception{
+        String dictName = null;
+        switch (type){
+            case "gene":
+                dictName = "HGNC";
+                break;
+            default:
+                break;
+        }
+        if(dictName == null){
+            throw new Exception("未找到匹配的词典");
+        }
+        String sql = "select count(1) from " + dictName;
         Integer totalNum = jdbcTemplate.queryForObject(sql, Integer.class);
         int mapInitSize = (int) ((float) totalNum / 0.75F + 1.0F);
         log.info("map的初始化大小为：" + mapInitSize);
@@ -58,16 +70,17 @@ public class DictBuilder {
         if(mapInitSize > 0){
             dict = new HashMap<String,Integer>(mapInitSize);
         }
-        if(dict == null){
+        String querySql = "select Approved_symbol from " + dictName;
+        try {
+            List<String> list = jdbcTemplate.queryForList(querySql, null, String.class);
+            for(String s : list){
+                dict.put(s,0);
+            }
+        } catch (DataAccessException e) {
+            e.printStackTrace();
             throw new Exception("词典创建失败");
         }
-        log.info("词典初始化完毕！");
-
-        String querySql = "select Approved_symbol from HGNC";
-        List<String> list = jdbcTemplate.queryForList(querySql, null, String.class);
-        for(String s : list){
-            dict.put(s,0);
-        }
+        log.info("词典初始化完毕");
         return dict;
     }
 

@@ -1,4 +1,4 @@
-package com.example.demo.demo;
+package com.example.demo.testdata;
 
 public class Text {
     public static String example =

@@ -16,7 +16,6 @@ public class PipelineController {
 
     @Autowired
     private Eutilities eutilities;
-
     @Autowired
     private DictBuilder dictBuilder;
     @Autowired
@@ -30,6 +29,7 @@ public class PipelineController {
 
     /**
      * Eutilities下载
+     * 保存整篇文章
      */
     @RequestMapping("/download")
     public void download(){
@@ -39,6 +39,7 @@ public class PipelineController {
 
     /**
      * Aphache OpenNLP分句
+     * 保存分句的结果
      */
     @RequestMapping("/ssplit")
     public void ssplit(){
@@ -51,7 +52,7 @@ public class PipelineController {
      */
     @RequestMapping("/dictner")
     public void dictner() throws Exception{
-        Map<String, Integer> dict = dictBuilder.bulidFromMysql();
+        Map<String, Integer> dict = dictBuilder.bulidFromMysql("gene");
         dictMatcher.matchSentence(dict);
     }
 
