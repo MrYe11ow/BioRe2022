@@ -2,17 +2,16 @@ package com.example.demo.service;
 
 import com.example.demo.mapper.EntityMapper;
 import com.example.demo.pojo.Entity;
-import com.example.echarts.EchartsNode;
-import com.example.echarts.EchartsResponse;
+import com.example.vo.EchartsLink;
+import com.example.vo.EchartsNode;
+import com.example.vo.EchartsResponse;
+import com.example.vo.Row;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -97,19 +96,29 @@ public class Result {
         return redisTemplate.opsForList().range("AR:" + name, 0, -1);
     }
 
+    public List<Row> datagrid(){
+        List<Row> list = new ArrayList<>();
+        return list;
+    }
+
     public EchartsResponse buildEchartsData(){
         EchartsResponse response = new EchartsResponse();
-        List<String> list = topPair(10);
-        Iterator<String> iterator = list.iterator();
-        while (iterator.hasNext()){
-            String s = iterator.next();
-            String[] ss = s.split(":");
+        Set<EchartsNode> nodeSet = new HashSet<>();
+        List<EchartsLink> linkList = new ArrayList<>();
+        List<String> pairList = topPair(10);
+        for(String pair : pairList){
+            String[] ss = pair.split(":");
             String e1 = ss[0];
             String e2 = ss[1];
             int e1num = 0;//e1出现的次数
             int e2num = 0;//e2出现的次数
-            int id = 0;//selectIdByName
-            new EchartsNode(id,e1,e1num,e2num,0);
+            int id1 = 0;//selectIdByName
+            int id2 = 0;
+            int category1 = 0;
+            int category2 = 0;
+            nodeSet.add(new EchartsNode(id1,e1,e1num,e1num,category1));
+            nodeSet.add(new EchartsNode(id2,e2,e2num,e2num,category2));
+            linkList.add(new EchartsLink(id1, id2));
         }
         return response;
     }

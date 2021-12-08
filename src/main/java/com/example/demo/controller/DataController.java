@@ -4,7 +4,8 @@ import com.example.demo.mapper.ArticleMapper;
 import com.example.demo.pojo.Article;
 import com.example.demo.pojo.Entity;
 import com.example.demo.service.Result;
-import com.example.echarts.EchartsResponse;
+import com.example.vo.EchartsResponse;
+import com.example.vo.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,6 +71,15 @@ public class DataController {
     @RequestMapping("/protein/{pmid}")
     public List<Entity> getProteinByPmid(@PathVariable("pmid") String pmid){
         return null;
+    }
+
+    /**
+     * 请求表格数据
+     * @return
+     */
+    @RequestMapping("/datagrid")
+    public List<Row> datagrid(){
+        return result.datagrid();
     }
 
     /**
