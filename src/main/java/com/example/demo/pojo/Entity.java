@@ -7,7 +7,7 @@ public class Entity {
     private int id;
     private String pmid;
     private int sentenceId;
-    private int serialNumber;
+    private int serialNumber;//所属句子的序号 0表示标题
     private String name;
     private String type;//gene、protein
     private String taggedby;//dict、abner
