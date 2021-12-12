@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.mapper.ArticleMapper;
 import com.example.demo.pojo.EfetchParam;
 import com.example.demo.util.JsoupUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,8 @@ public class Eutilities {
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private ArticleMapper articleMapper;
 
     /**
      * 数据请求格式定义
@@ -45,7 +48,7 @@ public class Eutilities {
                 if(queueSize < 40)
                     break;
             }
-            pool.execute(new DataTask(url2, efetchParam.getWebEnv(), efetchParam.getKey(), i,retmax));
+            pool.execute(new DataTask(restTemplate,articleMapper,url2, efetchParam.getWebEnv(), efetchParam.getKey(), i,retmax));
         }
     }
 }

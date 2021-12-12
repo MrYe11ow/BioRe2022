@@ -31,4 +31,10 @@ class DemoApplicationTests {
 		articleMapper.batchInsert(list);
 	}
 
+	public static void main(String[] args) {
+		Double a = 0.2;
+		a++;
+		System.out.println(a);
+	}
+
 }

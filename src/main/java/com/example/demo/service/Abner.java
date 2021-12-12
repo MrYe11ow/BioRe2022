@@ -9,7 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -36,6 +39,7 @@ public class Abner{
     }
 
     public void doo(Tagger tagger, String pmid, int sentenceId, int serialNumber, String text){
+        List<Entity> list = new ArrayList<>();
         String[][] tagged = tagger.getEntities(text);
         String[] entities = tagged[0];
         String[] types = tagged[1];
@@ -44,8 +48,12 @@ public class Abner{
                 String name = entities[i];
                 String type = types[i];
                 //todo 一句 只保存 同名实体 一次
-                entityMapper.insert(new Entity(pmid,sentenceId,serialNumber, name,type,"ABNER"));
+                if(name.length()<100){
+                    list.add(new Entity(sentenceId, pmid, serialNumber, name, type,"ABNER"));
+                }
             }
+            if(list.size()>0)
+                entityMapper.batchInsert(list);
         }
     }
 

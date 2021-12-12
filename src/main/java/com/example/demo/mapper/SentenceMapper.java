@@ -33,4 +33,6 @@ public interface SentenceMapper {
      * @return
      */
     int queryLeftTotal(String col);
+
+    List<Sentence> coccurrence(@Param("e1") String e1, @Param("e2") String e2);
 }

@@ -3,15 +3,17 @@ package com.example.demo.controller;
 import com.example.demo.mapper.ArticleMapper;
 import com.example.demo.pojo.Article;
 import com.example.demo.pojo.Entity;
+import com.example.demo.pojo.Sentence;
 import com.example.demo.service.Result;
 import com.example.vo.EchartsResponse;
-import com.example.vo.Row;
+import com.example.vo.TopNSingle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/data")
@@ -43,14 +45,14 @@ public class DataController {
     }
 
     /**
-     * 获取包含某实体的所有文章id
+     * 获取包含某实体对的所有句子
      * @param name1
      * @param name2
      * @return
      */
     @RequestMapping("/contained/{name1}/{name2}")
-    public List<String> getContainedPmids(@PathVariable("name1") String name1, @PathVariable("name2") String name2){
-        return null;
+    public List<Sentence> getSentences(@PathVariable("name1") String name1, @PathVariable("name2") String name2){
+        return result.getContainedSentences(name1,name2);
     }
 
     /**
@@ -78,7 +80,7 @@ public class DataController {
      * @return
      */
     @RequestMapping("/datagrid")
-    public List<Row> datagrid(){
+    public List<TopNSingle> datagrid(){
         return result.datagrid();
     }
 
@@ -89,6 +91,17 @@ public class DataController {
     @RequestMapping("/echarts")
     public EchartsResponse getEchartsData(){
         return result.buildEchartsData();
+    }
+
+    @RequestMapping("/topSingle")
+    public List<Map<String, Object>> topSingle(){
+        String type = "PROTEIN";
+        return result.topSingle(type);
+    }
+
+    @RequestMapping("/topPair")
+    public List topPair(){
+        return result.topPair(10);
     }
 
 }

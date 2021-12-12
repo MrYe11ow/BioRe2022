@@ -29,11 +29,20 @@
     </select>
 
     <select id="queryLeftPage" resultType="com.example.demo.pojo.Sentence">
-        select id, pmid,serial_number as serialNumber,text from Sentence where ${col} = 0 limit #{start}, #{pagesize};
+<!--        select id, pmid,serial_number as serialNumber,text from Sentence where ${col} = 0 limit #{start}, #{pagesize};-->
+        select id, pmid,serial_number as serialNumber,text from Sentence limit #{start}, #{pagesize};
     </select>
 
     <select id="queryLeftTotal" resultType="int">
-        select count(1) from Sentence where ${col} = 0
+<!--        select count(1) from Sentence where ${col} = 0-->
+        select count(1) from Sentence
+    </select>
+
+    <select id="coccurrence" resultType="com.example.demo.pojo.Sentence">
+        select sentence_id as id,text as text from Entity,Sentence where name = #{e1} and sentence_id in(
+        select sentence_id from Entity where name = #{e2}
+        ) and Entity.sentence_id = Sentence.id
+
     </select>
 
 </mapper>

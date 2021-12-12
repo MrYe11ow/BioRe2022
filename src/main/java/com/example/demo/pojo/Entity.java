@@ -12,7 +12,7 @@ public class Entity {
     private String type;//gene、protein
     private String taggedby;//dict、abner
 
-    public Entity(String pmid, int sentenceId, int serialNumber, String name, String type, String taggedby) {
+    public Entity(int sentenceId, String pmid, int serialNumber, String name, String type, String taggedby) {
         this.pmid = pmid;
         this.sentenceId = sentenceId;
         this.serialNumber = serialNumber;

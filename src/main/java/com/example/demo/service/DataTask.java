@@ -11,12 +11,10 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Slf4j
+//@Slf4j
 public class DataTask implements Runnable{
 
-    @Autowired
     private RestTemplate restTemplate;
-    @Autowired
     private ArticleMapper articleMapper;
 
     private static AtomicInteger count;
@@ -27,8 +25,10 @@ public class DataTask implements Runnable{
     private int retstart;
     private int retmax;
 
-    public DataTask(String url, String webEnv, String key, int retstart, int retmax){
+    public DataTask(RestTemplate restTemplate, ArticleMapper articleMapper,String url, String webEnv, String key, int retstart, int retmax){
         super();
+        this.restTemplate = restTemplate;
+        this.articleMapper = articleMapper;
         this.url = url;
         this.webEnv = webEnv;
         this.key = key;
@@ -43,7 +43,8 @@ public class DataTask implements Runnable{
         try {
             body = restTemplate.getForEntity(url, String.class, webEnv, key, retstart, retmax).getBody();
         } catch (RestClientException e) {
-            log.error("Eutilities下载失败,retstart={}",retstart);
+            //log.error("Eutilities下载失败,retstart={}",retstart);
+            System.out.println("Eutilities下载失败,retstart="+retstart);
         }
         if(body != null){
             long t2 = System.currentTimeMillis();
@@ -51,7 +52,9 @@ public class DataTask implements Runnable{
             long t3 = System.currentTimeMillis();
             if(list != null && list.size() > 0){
                 articleMapper.batchInsert(list);
-                log.info("{}篇,获取:{}ms,解析:{}ms,{}p篇已保存",retmax,(t2-t1),(t3-t2),count.addAndGet(list.size()));
+                //log.info("{}篇,获取:{}ms,解析:{}ms,{}p篇已保存",retmax,(t2-t1),(t3-t2),count.addAndGet(list.size()));
+                //todo 空指针异常
+                System.out.println(retmax+"篇,获取:"+(t2-t1)+"ms,解析:"+(t3-t2)+"ms,"+count.addAndGet(list.size())+"p篇已保存");
             }
         }
     }

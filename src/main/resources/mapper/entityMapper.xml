@@ -2,22 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.mapper.EntityMapper">
 
-    <insert id="batchInsert" parameterType="com.example.demo.pojo.Sentence">
+    <insert id="batchInsert" parameterType="com.example.demo.pojo.Entity">
         insert into Entity
-        (pmid, sentence_id, name, type, taggedby)
+        (pmid, sentence_id, serial_number, name, type, taggedby)
         values
         <foreach collection="list" item="item" index="index" separator=",">
             (
-            #{item.pmid},#{item.sentenceId},#{item.name},#{item.type},#{item.taggedby}
+            #{item.pmid},#{item.sentenceId},#{item.serialNumber},#{item.name},#{item.type},#{item.taggedby}
             )
         </foreach>
     </insert>
 
-    <insert id="insert" parameterType="com.example.demo.pojo.Sentence">
+    <insert id="insert" parameterType="com.example.demo.pojo.Entity">
         insert into Entity
-            (pmid, sentence_id, name, type, taggedby)
+            (pmid, sentence_id, serial_number name, type, taggedby)
         values
-            (#{pmid},#{sentenceId},#{name},#{type},#{taggedby})
+            (#{pmid},#{sentenceId},#{serialNumber},#{name},#{type},#{taggedby})
     </insert>
 
     <select id="queryBySentenceId" parameterType="long" resultType="com.example.demo.pojo.Entity">
@@ -29,7 +29,22 @@
     </select>
 
     <select id="queryAll" resultType="com.example.demo.pojo.Entity">
-        select id, pmid, sentence_id as sentenceId, name, type, taggedby from Entity
+        select id, pmid, sentence_id as sentenceId,series_number as seriesNumber, name, type, taggedby from Entity
     </select>
 
+    <select id="total" resultType="java.lang.Integer">
+        select count(1) from Entity
+    </select>
+
+    <select id="queryByPage" resultType="com.example.demo.pojo.Entity">
+        select id, pmid, sentence_id as sentenceId,serial_number as serialNumber, name, type, taggedby from Entity limit #{start},#{pagesize}
+    </select>
+
+
+   <!-- 12103
+    14484
+    16908
+    19386
+
+    pmid:32700765-->
 </mapper>

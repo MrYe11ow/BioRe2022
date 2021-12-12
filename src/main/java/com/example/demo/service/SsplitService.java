@@ -38,19 +38,24 @@ public class SsplitService {
         }
         SentenceDetectorME detector = new SentenceDetectorME(model);
 
+        //todo 为啥Sentence表中有重复的句子
         Integer total = articleMapper.queryLeftTotal("ssplit_flag");
-        for(int i = 0; i<total; i+=500){
+        for(int i = 0; i<total; i+=100){
+            List<Sentence> sentenceList = new ArrayList<>();
             List<Article> articles = articleMapper.queryLeftPage("ssplit_flag", i, 500);
             for(Article article : articles){
-                List<Sentence> sentenceList = new ArrayList<>();
                 String pmid = article.getPmid();
-                String[] sens = detector.sentDetect(article.getAbstractText());
-                for(int j = 0; j< sens.length; j++){
-                    sentenceList.add(new Sentence(pmid,j+1,sens[j]));
+                String title = article.getArticleTitle();
+                sentenceList.add(new Sentence(pmid,0,title));
+                String abstractText = article.getAbstractText();
+                if(abstractText!=null){
+                    String[] sens = detector.sentDetect(abstractText);
+                    for(int j = 0; j< sens.length; j++){
+                        sentenceList.add(new Sentence(pmid,j+1,sens[j]));
+                    }
                 }
-                sentenceMapper.batchInsert(sentenceList);
             }
-
+            sentenceMapper.batchInsert(sentenceList);
         }
     }
 

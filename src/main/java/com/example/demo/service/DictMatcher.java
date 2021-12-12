@@ -68,7 +68,7 @@ public class DictMatcher {
         }
         if(!tempSet.isEmpty()){
             for(String e : tempSet){
-                Entity entity = new Entity(pmid, sentenceId, serialNumber, e, "GENE", "DICT");
+                Entity entity = new Entity(sentenceId, pmid, serialNumber, e, "GENE", "DICT");
                 entityMapper.insert(entity);
             }
         }

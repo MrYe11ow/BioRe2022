@@ -21,15 +21,17 @@
     </insert>
 
     <select id="queryById" parameterType="String" resultType="com.example.demo.pojo.Article">
-        select pmid,article_title,abstract_text from Article where pmid = #{pmid} limit 1
+        select pmid,article_title as articleTitle,abstract_text as abstractText from Article where pmid = #{pmid} limit 1
     </select>
 
     <select id="queryLeftPage" resultType="com.example.demo.pojo.Article">
-        select pmid,article_title,abstract_text from Article where ${col} = 0 limit #{start}, #{pagesize}
+<!--        select pmid,article_title,abstract_text from Article where ${col} = 0 limit #{start}, #{pagesize}-->
+        select pmid,article_title as articleTitle,abstract_text as abstractText from Article limit #{start}, #{pagesize}
     </select>
 
     <select id="queryLeftTotal" resultType="int">
-        select count(1) from Article where ${col} = 0;
+<!--        select count(1) from Article where ${col} = 0;-->
+        select count(1) from Article
     </select>
 
 </mapper>
