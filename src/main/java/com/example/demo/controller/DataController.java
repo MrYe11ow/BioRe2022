@@ -6,6 +6,7 @@ import com.example.demo.pojo.Entity;
 import com.example.demo.pojo.Sentence;
 import com.example.demo.service.Result;
 import com.example.vo.EchartsResponse;
+import com.example.vo.StatInfoVo;
 import com.example.vo.TopNSingle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -102,6 +103,15 @@ public class DataController {
     @RequestMapping("/topPair")
     public List topPair(){
         return result.topPair(10);
+    }
+
+    /**
+     * 首页统计信息
+     * @return
+     */
+    @RequestMapping("/statInfo")
+    public StatInfoVo statInfo(){
+        return result.statInfo();
     }
 
 }

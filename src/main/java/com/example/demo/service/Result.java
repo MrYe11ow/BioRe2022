@@ -174,4 +174,20 @@ public class Result {
     public List<Sentence> getContainedSentences(String name1, String name2) {
         return sentenceMapper.coccurrence(name1, name2);
     }
+
+    public StatInfoVo statInfo(){
+        Map<String,Integer> map = new HashMap<>();
+        String sql1 = "select count(1) from Article";
+        String sql2 = "select count(1) from Sentence";
+        String sql3 = "select type,count(1) as number from Entity group by type";
+        Integer articleCount = jdbcTemplate.queryForObject(sql1, Integer.class);
+        Integer sentenceCount = jdbcTemplate.queryForObject(sql2, Integer.class);
+        List<Map<String, Object>> maps = jdbcTemplate.queryForList(sql3);
+        StatInfoVo statInfoVo = StatInfoVo.builder()
+                .articleCount(articleCount)
+                .sentenceCount(sentenceCount)
+                .entityStatInfo(maps)
+                .build();
+        return statInfoVo;
+    }
 }
