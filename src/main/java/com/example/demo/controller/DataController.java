@@ -97,7 +97,7 @@ public class DataController {
     @RequestMapping("/topSingle")
     public List<Map<String, Object>> topSingle(){
         String type = "PROTEIN";
-        return result.topSingle(type);
+        return result.topSingle(type,10);
     }
 
     @RequestMapping("/topPair")
@@ -114,4 +114,8 @@ public class DataController {
         return result.statInfo();
     }
 
+    @RequestMapping("/detailTotal/{name1}/{name2}")
+    public int detailTotal(@PathVariable("name1") String name1, @PathVariable("name2") String name2){
+        return result.detailTotal(name1, name2);
+    }
 }

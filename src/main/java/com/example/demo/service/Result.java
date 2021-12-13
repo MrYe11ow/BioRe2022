@@ -71,14 +71,14 @@ public class Result {
         System.out.println("加载缓存完成");
     }
 
-    public List<Map<String, Object>> topSingle(String type){
+    public List<Map<String, Object>> topSingle(String type,int limit){
 //        Set ranking = redisTemplate.opsForZSet().reverseRangeByScoreWithScores("GeneSingleRanking", 0, num);
 //        return new ArrayList<>(ranking);
 
         List<Map<String, Object>> mapList = null;
         mapList = redisTemplate.opsForList().range("top10" + type, 0, -1);
         if(mapList == null || mapList.size()==0){
-            String sql = "select name,count(1) as count from Entity where type = '"+type+"' group by name order by count(1) desc limit 10";
+            String sql = "select name,count(1) as count from Entity where type = '"+type+"' group by name order by count(1) desc limit "+limit;
              mapList = jdbcTemplate.queryForList(sql);
              if(mapList !=null && mapList.size()>0)
             for(Map<String,Object> map : mapList){
@@ -154,6 +154,12 @@ public class Result {
         EchartsResponse response = new EchartsResponse();
         Set<EchartsNode> nodeSet = new HashSet<>();
         List<EchartsLink> linkList = new ArrayList<>();
+        List<Map<String, Object>> topSingle = topSingle("PROTEIN",50);
+        for(Map<String,Object> map: topSingle){
+            new EchartsNode();
+        }
+
+
         List<TopNPair> pairList = topPair(10);
         for(TopNPair pair : pairList){
             String e1 = pair.getE1();
@@ -168,6 +174,9 @@ public class Result {
             nodeSet.add(new EchartsNode(id2,e2,e2num,e2num,category2));
             linkList.add(new EchartsLink(id1, id2));
         }
+        response.setNodes(nodeSet);
+        response.setLinks(linkList);
+        //response.setCategories();
         return response;
     }
 
@@ -189,5 +198,9 @@ public class Result {
                 .entityStatInfo(maps)
                 .build();
         return statInfoVo;
+    }
+
+    public int detailTotal(String name1,String name2){
+        return sentenceMapper.countCoccurrence(name1,name2);
     }
 }

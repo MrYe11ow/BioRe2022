@@ -45,4 +45,11 @@
 
     </select>
 
+    <select id="countCoccurrence" resultType="int">
+        select count(1) from Entity,Sentence where name = #{e1} and sentence_id in(
+        select sentence_id from Entity where name = #{e2}
+        ) and Entity.sentence_id = Sentence.id
+
+    </select>
+
 </mapper>
