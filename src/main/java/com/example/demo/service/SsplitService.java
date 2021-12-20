@@ -40,9 +40,10 @@ public class SsplitService {
 
         //todo 为啥Sentence表中有重复的句子
         Integer total = articleMapper.queryLeftTotal("ssplit_flag");
-        for(int i = 0; i<total; i+=100){
+        int pagesize = 500;
+        for(int i = 0; i<total; i+=pagesize){
             List<Sentence> sentenceList = new ArrayList<>();
-            List<Article> articles = articleMapper.queryLeftPage("ssplit_flag", i, 500);
+            List<Article> articles = articleMapper.queryLeftPage("ssplit_flag", i, pagesize);
             for(Article article : articles){
                 String pmid = article.getPmid();
                 String title = article.getArticleTitle();
