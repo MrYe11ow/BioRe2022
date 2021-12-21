@@ -156,7 +156,7 @@ public class Result {
         List<EchartsLink> linkList = new ArrayList<>();
         List<Map<String, Object>> topSingle = topSingle("PROTEIN",50);
         for(Map<String,Object> map: topSingle){
-            new EchartsNode();
+            //new EchartsNode();
         }
 
 
