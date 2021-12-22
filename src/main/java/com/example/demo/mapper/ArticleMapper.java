@@ -16,6 +16,8 @@ public interface ArticleMapper {
 
     Article queryById(String pmid);
 
+    List<String> getPmidList(@Param("start")int start, @Param("pagesize") int pagesize);
+
     /**
      * 剩余待处理 分页
      * @param col 数据库表列名（是否进行过某任务的标记位）

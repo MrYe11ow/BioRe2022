@@ -34,4 +34,8 @@
         select count(1) from Article
     </select>
 
+    <select id="getPmidList" resultType="java.lang.String">
+        select pmid from Article limit #{start}, #{pagesize}
+    </select>
+
 </mapper>

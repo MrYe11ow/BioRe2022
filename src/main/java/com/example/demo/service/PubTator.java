@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.mapper.ArticleMapper;
 import com.example.demo.mapper.PubTatorMentionMapper;
 import com.example.demo.pojo.Entity;
 import com.example.demo.pojo.PubTatorMention;
@@ -26,6 +27,18 @@ public class PubTator {
 
     @Autowired
     private PubTatorMentionMapper pubTatorMentionMapper;
+
+    @Autowired
+    private ArticleMapper articleMapper;
+
+    public void doNer() throws Exception{
+        Integer total = articleMapper.queryLeftTotal("pubtator");
+        int pagesize = 10000;
+        for(int i = 0; i<total ;i+=pagesize){
+            List<String> pmidList = articleMapper.getPmidList(i, pagesize);
+            tag(pmidList);
+        }
+    }
 
     public void tag(List<String> pmidList) throws IOException {
         String url = "https://www.ncbi.nlm.nih.gov/research/pubtator-api/publications/export/pubtator";
